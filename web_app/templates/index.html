@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SmartJugAI — Water Jug Solver</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 40px;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      border-radius: 15px;
+      margin-top: 50px;
+    }
+    h1 {
+      text-align: center;
+      color: #2b5876;
+    }
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 30px;
+      width: 100%;
+      background-color: #2b5876;
+      color: white;
+      padding: 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #4e4376;
+    }
+    .output {
+      margin-top: 40px;
+      padding: 20px;
+      background: #f0f8ff;
+      border-left: 5px solid #2b5876;
+      border-radius: 10px;
+    }
+    .step {
+      margin-bottom: 10px;
+      font-family: monospace;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💧 AquaLogic</h1>
+    <form method="post">
+      <label>Number of Jugs (2 or 3):</label>
+      <input type="number" name="num_jugs" min="2" max="3" required />
+
+      <label>Capacity of Jug 1:</label>
+      <input type="number" name="cap1" required />
+      <label>Capacity of Jug 2:</label>
+      <input type="number" name="cap2" required />
+      <label>Capacity of Jug 3 (if applicable):</label>
+      <input type="number" name="cap3" />
+
+      <label>Goal (e.g. 4 or 2,0):</label>
+      <input type="text" name="goal" required />
+
+      <label>Algorithm:</label>
+      <select name="algorithm" required>
+        <option value="BFS">BFS</option>
+        <option value="DFS">DFS</option>
+        <option value="A*">A*</option>
+      </select>
+
+      <button type="submit">Solve</button>
+    </form>
+
+    {% if result %}
+    <div class="output">
+      {% if result.error %}
+        <p class="error">{{ result.error }}</p>
+      {% else %}
+        <h3>Result: {{ result.message }}</h3>
+        <p><strong>Capacities:</strong> {{ result.capacities }}</p>
+        <p><strong>Goal:</strong> {{ result.goal }}</p>
+        <p><strong>Algorithm:</strong> {{ result.algorithm }}</p>
+        <p><strong>Time Taken:</strong> {{ result.time }} sec</p>
+
+        <h4>Solution Path:</h4>
+        <ul>
+          {% for state, action in result.paths %}
+            <li><span class="step">State: {{ state }} → {{ action }}</span></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>
